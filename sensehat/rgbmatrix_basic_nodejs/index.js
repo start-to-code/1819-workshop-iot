@@ -30,3 +30,10 @@ for(let x=0;x<=7;x+=2) {
         flashLED(x, y, 400+Math.round(Math.random()*2600));
     }
 }
+
+// Close event
+process.on('SIGTERM', () => {
+    sense.clear()
+    console.log("jkjkjj")
+    process.exit(0)
+})
