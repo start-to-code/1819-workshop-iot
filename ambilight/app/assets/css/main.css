@@ -1,0 +1,60 @@
+/*
+Variables
+*/
+:root {
+  --color-black: #000000;
+  --color-grey-dark: #dddddd;
+  --color-grey: #e6e6e6;
+  --color-grey-light: #efefef;
+  --color-white: #ffffff;
+  --gutter: 12px;
+}
+
+/*
+Grid
+*/
+.container {
+  max-width: 1140px;
+}
+
+/*
+Components
+*/
+.card {
+  background: var(--color-light-grey);
+  border: 2px solid var(--color-grey-dark);
+  border-radius: calc(var(--gutter)/2);
+
+  overflow: hidden;
+}
+
+.card__header {
+  padding: calc(var(--gutter)/2) calc(var(--gutter));
+  background: var(--color-grey);
+  color: var(--color-black);
+
+  border-bottom: 2px solid var(--color-grey-dark);
+}
+
+.card__main {
+  padding: calc(var(--gutter)) calc(var(--gutter));
+}
+
+.card__footer {
+  padding: calc(var(--gutter)/2) calc(var(--gutter));
+  background: var(--color-grey);
+  color: var(--color-black);
+
+  border-top: 2px solid var(--color-grey-dark);
+}
+
+
+
+#rgbmatrix {
+  width: 200px;
+  height: 200px;
+  display: block;
+
+  background: #000000;
+  border: 4px solid #000000; 
+}

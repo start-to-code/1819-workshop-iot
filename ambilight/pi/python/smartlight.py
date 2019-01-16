@@ -1,6 +1,6 @@
 '''
 Prerequisites:
-sudo pip3 install --upgrade firebase-admin
+sudo pip3 install --upgrade google-cloud-firebase
 '''
 
 # Import the necessary libraries
