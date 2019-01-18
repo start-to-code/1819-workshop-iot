@@ -11,8 +11,8 @@ import os
 from google.cloud import firestore
 
 # Constants
-COLLECTION_NAME = u'ambilights'
-LIGHT_ID = u'stc_light_1'
+COLLECTION_NAME = u'pis'
+PI_ID = u'stc_pi_1'
 
 # Make an instance of SenseHat
 sense = SenseHat()
@@ -37,18 +37,18 @@ def on_snapshot(doc_snapshot, changes, read_time):
     for doc in doc_snapshot:
         doc_dict = doc.to_dict()
         print(doc_dict)
-        if doc_dict['isOn'] == True:
-            if doc_dict['color']['type'] == 'hex':
-              color = convertHexValueToTuple(doc_dict['color']['value'])
+        if doc_dict['ambilight']['isOn'] == True:
+            if doc_dict['ambilight']['color']['type'] == 'hex':
+              color = convertHexValueToTuple(doc_dict['ambilight']['color']['value'])
             else:
               color = (0, 0, 255)
             sense.clear(color)
         else:
             sense.clear()
 
-# Get the light
-light_ref = db.collection(COLLECTION_NAME).document(LIGHT_ID)
-light_watch = light_ref.on_snapshot(on_snapshot)
+# Get the pi ref
+pi_ref = db.collection(COLLECTION_NAME).document(PI_ID)
+pi_watch = pi_ref.on_snapshot(on_snapshot)
 
 while True:
     try:
