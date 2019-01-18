@@ -30,8 +30,8 @@ const config = {
     storageBucket: 'start-to-code.appspot.com',
     messagingSenderId: '659804621253',
   },
-  pis_collection_name: 'pis',
-  pi_id: 'stc_pi_1',
+  ambilights_collection_name: 'ambilights',
+  light_id: 'stc_light_1',
 }
 
 ;((window) => {
@@ -49,7 +49,7 @@ const config = {
       this.cacheDOMElements(); 
 
       // Get the ambilight via Firebase collection and document child
-      this._piRef = this._firestore.collection(config.pis_collection_name).doc(config.pi_id);
+      this._ambiLightRef = this._firestore.collection(config.ambilights_collection_name).doc(config.light_id);
       this._ambiLigtData = {
         isOn: false,
         color: {
@@ -57,12 +57,11 @@ const config = {
           type: 'hex'
         }
       }
-      this._piRef.get().then((doc) => {
+      this._ambiLightRef.get().then((doc) => {
           if (doc.exists) {
-            console.log(doc.data().ambilight)
-            this._ambiLigtData = doc.data().ambilight
-            this._piRef.onSnapshot((doc) => {
-              this._ambiLigtData = doc.data().ambilight
+            this._ambiLigtData = doc.data()
+            this._ambiLightRef.onSnapshot((doc) => {
+              this._ambiLigtData = doc.data()
               this.updateUI();
             })
           }
@@ -112,9 +111,9 @@ const config = {
       }
     },
     updateAmbilightInFirebase() {
-      this._piRef.get().then((doc) => {
+      this._ambiLightRef.get().then((doc) => {
           if (doc.exists) {
-              this._piRef.set({ ambilight: this._ambiLigtData }, { merge: true }).then(() => {
+              this._ambiLightRef.set(this._ambiLigtData, { merge: true }).then(() => {
                 console.log('Document updated!')
               }).catch((error) => {
                 console.log('Error writing document: ${error}')
