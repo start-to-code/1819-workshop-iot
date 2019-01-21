@@ -22,6 +22,7 @@ PI_ID = u'stc_pi_1'
 
 # Make an instance of SenseHat
 sense = SenseHat()
+sense.set_imu_config(False, False, False)
 # Clear the RGB matrix
 sense.clear()
 

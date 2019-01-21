@@ -50,19 +50,24 @@ const config = {
 
       // Get the ambilight via Firebase collection and document child
       this._piRef = this._firestore.collection(config.pis_collection_name).doc(config.pi_id);
-      this._ambiLigtData = {
+      this._ambiLightData = {
         isOn: false,
         color: {
           value: '#000000',
           type: 'hex'
         }
       }
+      this._environmentData = {
+      }
       this._piRef.get().then((doc) => {
           if (doc.exists) {
             console.log(doc.data().ambilight)
-            this._ambiLigtData = doc.data().ambilight
+            console.log(doc.data().environment)
+            this._ambiLightData = doc.data().ambilight
+            this._environmentData = doc.data().environment
             this._piRef.onSnapshot((doc) => {
-              this._ambiLigtData = doc.data().ambilight
+              this._ambiLightData = doc.data().ambilight
+              this._environmentData = doc.data().environment
               this.updateUI();
             })
           }
@@ -71,50 +76,76 @@ const config = {
       })
     },
     cacheDOMElements() {
+      // Environment DOM Elements
+      this._$environment__temperature = document.querySelector('#environment__temperature')
+      this._$environment__humidity = document.querySelector('#environment__humidity')
+      this._$environment__pressure = document.querySelector('#environment__pressure')
+
+      // RGB Led Matrix
       this._$rgbmatrix = document.querySelector('#rgbmatrix')
       this._$rgbmatrixBulb = document.querySelector('.rgbmatrix__bulb')
       this._$chkRgbmatrixState = document.querySelector('#chkRgbmatrixState')
       if(this._$chkRgbmatrixState) {
         this._$chkRgbmatrixState.addEventListener('change', (ev) => {
           ev.preventDefault()
-          this._ambiLigtData.isOn = ev.target.checked
+          this._ambiLightData.isOn = ev.target.checked
           this.updateAmbilightInFirebase()
           return false
         })
       }
       this._$txtRgbmatrixColor = document.querySelector('#txtRgbmatrixColor')
-      if(this._$txtRgbmatrixColor) {
+      this._picker = new CP(this._$txtRgbmatrixColor);
+      this._picker.on('stop', (color) => {
+          this._$txtRgbmatrixColor.value = '#' + color;
+          this._ambiLightData.color.value = this._$txtRgbmatrixColor.value
+          this._ambiLightData.color.type = 'hex'
+
+          this.updateUI()
+          this.updateAmbilightInFirebase()
+      })
+      /*if(this._$txtRgbmatrixColor) {
         this._$txtRgbmatrixColor.addEventListener('keyup', (ev) => {
           ev.preventDefault()
           if (ev.key === "Enter") {
-            this._ambiLigtData.color.value = ev.target.value
-            this._ambiLigtData.color.type = 'hex'
+            this._ambiLightData.color.value = ev.target.value
+            this._ambiLightData.color.type = 'hex'
 
             this.updateUI()
             this.updateAmbilightInFirebase()
           }
           return false
         })
-      }
+    }*/
     },
     updateUI() {
       if(this._$rgbmatrix) {
-        this._$rgbmatrix.style.background = this._ambiLigtData.color.value
+        this._$rgbmatrix.style.background = this._ambiLightData.color.value
       }
       if(this._$rgbmatrixBulb) {
-        this._$rgbmatrixBulb.style.color = this._ambiLigtData.color.value
+        this._$rgbmatrixBulb.style.color = this._ambiLightData.color.value
       }
       if(this._$txtRgbmatrixColor) {
-        this._$txtRgbmatrixColor.value = this._ambiLigtData.color.value;
+        this._$txtRgbmatrixColor.value = this._ambiLightData.color.value;
       }
       if(this._$chkRgbmatrixState) {
-        this._$chkRgbmatrixState.checked = this._ambiLigtData.isOn;
+        this._$chkRgbmatrixState.checked = this._ambiLightData.isOn;
+      }
+
+      // Environment
+      if(this._$environment__temperature) {
+        this._$environment__temperature.innerHTML = `<span class="value">${this._environmentData.temperature.value}</span><span class="label">${this._environmentData.temperature.unit_code} (${this._environmentData.temperature.unit_text})</span>`
+      }
+      if(this._$environment__humidity) {
+        this._$environment__humidity.innerHTML = `<span class="value">${this._environmentData.humidity.value}</span><span class="label">${this._environmentData.humidity.unit_code} (${this._environmentData.humidity.unit_text})</span>`
+      }
+      if(this._$environment__pressure) {
+        this._$environment__pressure.innerHTML = `<span class="value">${this._environmentData.pressure.value}</span><span class="label">${this._environmentData.pressure.unit_code} (${this._environmentData.pressure.unit_text})</span>`
       }
     },
     updateAmbilightInFirebase() {
       this._piRef.get().then((doc) => {
           if (doc.exists) {
-              this._piRef.set({ ambilight: this._ambiLigtData }, { merge: true }).then(() => {
+              this._piRef.set({ ambilight: this._ambiLightData }, { merge: true }).then(() => {
                 console.log('Document updated!')
               }).catch((error) => {
                 console.log('Error writing document: ${error}')
