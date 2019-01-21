@@ -1,6 +1,12 @@
 '''
-Prerequisites:
-sudo pip3 install --upgrade google-cloud-firebase
+Start to Code
+=============
+Workshop: Internet of Things (IoT)
+Application: Ambilight
+--------------------------------------
+Author: Philippe De Pauw - Waterschoot
+Opleiding: Grafische en digitale media
+Specialisatie: New Media Development
 '''
 
 # Import the necessary libraries

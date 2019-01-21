@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Ambilight | Start to Code | Internet of Things | Artevelde University College Ghent</title>
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+    crossorigin="anonymous">
   <link href="assets/css/main.css" rel="stylesheet">
 </head>
+
 <body>
-    
+
   <div class="card">
     <div class="card__header">
       <i class="far fa-lightbulb rgbmatrix__bulb"></i>
@@ -29,14 +32,28 @@
       <i class="fas fa-thermometer-half environment__bulb"></i>
       <span>Environment</span>
     </div>
-    <div class="card__main">
-      <div id="environment"></div>
-    </div>
-    <div class="card__footer">
-    </div>
+    <table class="card__main">
+      <table id="environment">
+        <tr>
+          <td>Temperature</td>
+          <td id="environment__temperature"></td>
+        </tr>
+        <tr>
+          <td>Humidity</td>
+          <td id="environment__humidity"></td>
+        </tr>
+        <tr>
+          <td>Pressure</td>
+          <td id="environment__pressure"></td>
+        </tr>
+      </table>
+  </div>
+  <div class="card__footer">
+  </div>
   </div>
 
   <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase.js"></script>
   <script src="assets/js/main.js"></script>
 </body>
+
 </html>
