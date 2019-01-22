@@ -35,3 +35,13 @@ platform.uname(),
 platform.version(),
 platform.mac_ver(),
 ))
+
+# OS information
+print(os.name)
+print(platform.system())
+print(platform.machine())
+print(platform.platform())
+
+# Drives or Volumes on Linux
+import commands
+fdisk_output = commands.getoutput('fdisk -l partition')
