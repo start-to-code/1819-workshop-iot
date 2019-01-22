@@ -12,6 +12,7 @@ Specialisatie: New Media Development
 # Import the necessary libraries
 from sense_hat import SenseHat
 from time import sleep
+from datetime import datetime
 import sys
 import os
 from google.cloud import firestore
@@ -74,7 +75,8 @@ while True:
                     u'value': pressure_next,
                     u'unit_code': u'mbar',
                     u'unit_text': u'Millibar'
-                }
+                },
+                u'modifiedAt': round(datetime.utcnow().timestamp() * 1000)
             }
             pi_ref.set({ 'environment': environmentObj }, merge=True )
             temperature = temperature_next

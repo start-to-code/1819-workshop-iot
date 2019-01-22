@@ -34,6 +34,13 @@ const config = {
   pi_id: 'stc_pi_1',
 }
 
+function convertTimeMillisToDate(millis) {
+  const localOffsetDate = new Date().getTimezoneOffset()
+  let realLocalDate = new Date(millis)
+  realLocalDate.setHours(realLocalDate.getHours()-localOffsetDate/60)
+  return realLocalDate.toLocaleString();
+}
+
 ;((window) => {
   const app = {
     init() {
@@ -77,6 +84,7 @@ const config = {
     },
     cacheDOMElements() {
       // Environment DOM Elements
+      this._$environment__modified_at = document.querySelector('#environment__modified_at')
       this._$environment__temperature = document.querySelector('#environment__temperature')
       this._$environment__humidity = document.querySelector('#environment__humidity')
       this._$environment__pressure = document.querySelector('#environment__pressure')
@@ -103,19 +111,6 @@ const config = {
           this.updateUI()
           this.updateAmbilightInFirebase()
       })
-      /*if(this._$txtRgbmatrixColor) {
-        this._$txtRgbmatrixColor.addEventListener('keyup', (ev) => {
-          ev.preventDefault()
-          if (ev.key === "Enter") {
-            this._ambiLightData.color.value = ev.target.value
-            this._ambiLightData.color.type = 'hex'
-
-            this.updateUI()
-            this.updateAmbilightInFirebase()
-          }
-          return false
-        })
-    }*/
     },
     updateUI() {
       if(this._$rgbmatrix) {
@@ -132,6 +127,9 @@ const config = {
       }
 
       // Environment
+      if(this._$environment__modified_at) {
+        this._$environment__modified_at.innerHTML = `<span class="value">${ convertTimeMillisToDate(this._environmentData.modifiedAt) }</span>`
+      }
       if(this._$environment__temperature) {
         this._$environment__temperature.innerHTML = `<span class="value">${this._environmentData.temperature.value}</span><span class="label">${this._environmentData.temperature.unit_code} (${this._environmentData.temperature.unit_text})</span>`
       }
