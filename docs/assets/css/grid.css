@@ -1,6 +1,15 @@
 :root {
-    --grid-gutter: 24px;
+    --grid-gutter: 12px;
   }
+
+.grid__full-container {
+    display: block;
+
+    padding-left: calc(var(--grid-gutter) / 2);
+    padding-right: calc(var(--grid-gutter) / 2);
+    margin-left: auto;
+    margin-right: auto;
+}
 
 .grid__container {
     display: block;
@@ -34,53 +43,55 @@
     padding-left: calc(var(--grid-gutter) / 2);
     padding-right: calc(var(--grid-gutter) / 2);
 }
-.grid__column-12 {
-    flex-basis: 100%;
-    max-width: 100%;
-}
-.grid__column-11 {
-    flex-basis: 91.66667%;
-    max-width: 91.66667%;
-}
-.grid__column-10 {
-    flex-basis: 83.33333%;
-    max-width: 83.33333%;
-}
-.grid__column-9 {
-    flex-basis: 75%;
-    max-width: 75%;
-}
-.grid__column-8 {
-    flex-basis: 66.66667%;
-    max-width: 66.66667%;
-}
-.grid__column-7 {
-    flex-basis: 58.33333%;
-    max-width: 58.33333%;
-}
-.grid__column-6 {
-    flex-basis: 50%;
-    max-width: 50%;
-}
-.grid__column-5 {
-    flex-basis: 41.66667%;
-    max-width: 41.66667%;
-}
-.grid__column-4 {
-    flex-basis: 33.33333%;
-    max-width: 33.33333%;
-}
-.grid__column-3 {
-    flex-basis: 25%;
-    max-width: 25%;
-}
-.grid__column-2 {
-    flex-basis: 16.66667%;
-    max-width: 16.66667%;
-}
-.grid__column-1 {
-    flex-basis: 8.33333%;
-    max-width: 8.33333%;
+@media (max-width: 319px) {
+    .grid__column-12 {
+        flex-basis: 100%;
+        max-width: 100%;
+    }
+    .grid__column-11 {
+        flex-basis: 91.66667%;
+        max-width: 91.66667%;
+    }
+    .grid__column-10 {
+        flex-basis: 83.33333%;
+        max-width: 83.33333%;
+    }
+    .grid__column-9 {
+        flex-basis: 75%;
+        max-width: 75%;
+    }
+    .grid__column-8 {
+        flex-basis: 66.66667%;
+        max-width: 66.66667%;
+    }
+    .grid__column-7 {
+        flex-basis: 58.33333%;
+        max-width: 58.33333%;
+    }
+    .grid__column-6 {
+        flex-basis: 50%;
+        max-width: 50%;
+    }
+    .grid__column-5 {
+        flex-basis: 41.66667%;
+        max-width: 41.66667%;
+    }
+    .grid__column-4 {
+        flex-basis: 33.33333%;
+        max-width: 33.33333%;
+    }
+    .grid__column-3 {
+        flex-basis: 25%;
+        max-width: 25%;
+    }
+    .grid__column-2 {
+        flex-basis: 16.66667%;
+        max-width: 16.66667%;
+    }
+    .grid__column-1 {
+        flex-basis: 8.33333%;
+        max-width: 8.33333%;
+    }
 }
 
 @media (min-width: 320px) {

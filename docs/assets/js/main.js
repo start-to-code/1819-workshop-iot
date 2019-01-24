@@ -57,115 +57,101 @@ function convertTimeMillisToDate(millis) {
         .then(query => {
           query.forEach(doc => {
             doc.ref.onSnapshot((doc_obj) => {
-              const domObj = document.querySelector(`#${doc_obj.id}`)
-              if(domObj === null) {
-                this._$pis.innerHTML += `
-                  <div id="${doc_obj.id}">
-                    <div class="ambilight">
-
-                    </div> 
-                    <div class="environment">
-                      <table>
-                        <tr>
-                          <td>Temperature</td>
-                          <td>${doc_obj.data().environment.temperature.value}</td>
-                        </tr>
-                        <tr>
-                          <td>Humidity</td>
-                          <td>${doc_obj.data().environment.humidity.value}</td>
-                        </tr>
-                        <tr>
-                          <td>Pressure</td>
-                          <td>${doc_obj.data().environment.pressure.value}</td>
-                        </tr>
-                      </table>
-                    </div> 
-                  </div>
-                `;
-              }
+              this.updateUIForRaspberryPiEnvironmentSensors(doc_obj)
+              this.updateUIForRaspberryPiAmbilight(doc_obj)
             })
           })
         })
         .catch(err => {
 
         })
-      /*this._ambiLightData = {
-        isOn: false,
-        color: {
-          value: '#000000',
-          type: 'hex'
+    },
+    updateUIForRaspberryPiEnvironmentSensors(doc_obj) {
+      const domObj = document.querySelector(`.${doc_obj.id}.environment`)
+      if(domObj === null) {
+        this._$pis.innerHTML += `
+          <div class="grid__column-12 grid__column-md-6 grid__column-lg-4 grid__column-xl-2 card__container">
+          <div class="card ${doc_obj.id} environment">
+            <header class="card__header">
+              <i class="fas fa-thermometer-half environment__bulb"></i>
+              <h2 class="card__title">RasPi: ${doc_obj.id} - Environment</h2>
+              <span></span>
+            </header>
+            <section class="card__main">
+              <table>
+                <tr>
+                  <td>Date</td>
+                  <td class="environment__modified_at"><span class="value">${convertTimeMillisToDate(doc_obj.data().environment.modifiedAt)}</span><span class="unit"></span></td>
+                </tr>   
+                <tr>
+                  <td>Temperature</td>
+                  <td class="temperatiure__value"><span class="value">${doc_obj.data().environment.temperature.value}</span><span class="unit">${ doc_obj.data().environment.temperature.unit_code }</span></td>
+                </tr>
+                <tr>
+                  <td>Humidity</td>
+                  <td class="humidity__value"><span class="value">${doc_obj.data().environment.humidity.value}</span><span class="unit">${ doc_obj.data().environment.humidity.unit_code }</span></td>
+                </tr>
+                <tr>
+                  <td>Pressure</td>
+                  <td class="pressure__value"><span class="value">${doc_obj.data().environment.pressure.value}</span><span class="unit">${ doc_obj.data().environment.pressure.unit_code }</span></td>
+                </tr>
+              </table>
+            </section>
+            <footer class="card__footer">
+            </footer>
+          </div> 
+          </div>
+        `
+      } else {
+        const _$environmentElement = document.querySelector(`.${doc_obj.id}.environment`)
+        const _$environment__modified_at = _$environmentElement.querySelector(`.environment__modified_at`)
+        if(_$environment__modified_at) {
+          _$environment__modified_at.innerHTML = `<span class="value">${convertTimeMillisToDate(doc_obj.data().environment.modifiedAt)}</span><span class="unit"></span>`
+        }
+        const _$temperatiure__value = _$environmentElement.querySelector(`.temperatiure__value`)
+        if(_$temperatiure__value) {
+          _$temperatiure__value.innerHTML = `<span class="value">${doc_obj.data().environment.temperature.value}</span><span class="unit">${ doc_obj.data().environment.temperature.unit_code }</span>`
+        }
+        const _$humidity__value = _$environmentElement.querySelector(`.humidity__value`)
+        if(_$humidity__value) {
+          _$humidity__value.innerHTML = `<span class="value">${doc_obj.data().environment.humidity.value}</span><span class="unit">${ doc_obj.data().environment.humidity.unit_code }</span>`
+        }
+        const _$pressure__value = _$environmentElement.querySelector(`.pressure__value`)
+        if(_$pressure__value) {
+          _$pressure__value.innerHTML = `<span class="value">${doc_obj.data().environment.pressure.value}</span><span class="unit">${ doc_obj.data().environment.pressure.unit_code }</span>`
         }
       }
-      this._environmentData = {
+    },
+    updateUIForRaspberryPiAmbilight(doc_obj) {
+      const domObj = document.querySelector(`.${doc_obj.id}.ambilight`)
+      if(domObj === null) {
+        this._$pis.innerHTML += `
+          <div class="grid__column-12 grid__column-md-6 grid__column-lg-4 grid__column-xl-2 card__container">
+          <div class="card ${doc_obj.id} ambilight">
+            <header class="card__header">
+              <i class="far fa-lightbulb rgbmatrix__bulb"></i>
+              <h2 class="card__title">RasPi: ${doc_obj.id} - Ambilight</h2>
+              <span></span>
+            </header>
+            <section class="card__main">
+              <div class="ambilight__color-value" style="background: ${doc_obj.data().ambilight.color.value};">${doc_obj.data().ambilight.color.value}</div>
+            </section>
+            <footer class="card__footer">
+            </footer>
+          </div> 
+          </div>
+        `
+      } else {
+        const _$ambilightElement = document.querySelector(`.${doc_obj.id}.ambilight`)
+        const _$ambilight__color_value = _$ambilightElement.querySelector(`.ambilight__color-value`)
+        if(_$ambilight__color_value) {
+          _$ambilight__color_value.style.background = doc_obj.data().ambilight.color.value
+        }
       }
-      this._piRef.get().then((doc) => {
-          if (doc.exists) {
-            console.log(doc.data().ambilight)
-            console.log(doc.data().environment)
-            this._ambiLightData = doc.data().ambilight
-            this._environmentData = doc.data().environment
-            this._piRef.onSnapshot((doc) => {
-              this._ambiLightData = doc.data().ambilight
-              this._environmentData = doc.data().environment
-              this.updateUI();
-            })
-          }
-      }).catch((error) => {
-          console.log("Error getting document:", error)
-      })*/
-    },
-    creatUI() {
-
-    },
-    updateRaspberryPi(pi_id) {
-
     },
     cacheDOMElements() {
       // Environment DOM Elements
       this._$pis = document.querySelector('#pis')
-    },
-    updateUI() {
-      if(this._$rgbmatrix) {
-        this._$rgbmatrix.style.background = this._ambiLightData.color.value
-      }
-      if(this._$rgbmatrixBulb) {
-        this._$rgbmatrixBulb.style.color = this._ambiLightData.color.value
-      }
-      if(this._$txtRgbmatrixColor) {
-        this._$txtRgbmatrixColor.value = this._ambiLightData.color.value;
-      }
-      if(this._$chkRgbmatrixState) {
-        this._$chkRgbmatrixState.checked = this._ambiLightData.isOn;
-      }
-
-      // Environment
-      if(this._$environment__modified_at) {
-        this._$environment__modified_at.innerHTML = `<span class="value">${ convertTimeMillisToDate(this._environmentData.modifiedAt) }</span>`
-      }
-      if(this._$environment__temperature) {
-        this._$environment__temperature.innerHTML = `<span class="value">${this._environmentData.temperature.value}</span><span class="label">${this._environmentData.temperature.unit_code} (${this._environmentData.temperature.unit_text})</span>`
-      }
-      if(this._$environment__humidity) {
-        this._$environment__humidity.innerHTML = `<span class="value">${this._environmentData.humidity.value}</span><span class="label">${this._environmentData.humidity.unit_code} (${this._environmentData.humidity.unit_text})</span>`
-      }
-      if(this._$environment__pressure) {
-        this._$environment__pressure.innerHTML = `<span class="value">${this._environmentData.pressure.value}</span><span class="label">${this._environmentData.pressure.unit_code} (${this._environmentData.pressure.unit_text})</span>`
-      }
-    },
-    updateAmbilightInFirebase() {
-      this._piRef.get().then((doc) => {
-          if (doc.exists) {
-              this._piRef.set({ ambilight: this._ambiLightData }, { merge: true }).then(() => {
-                console.log('Document updated!')
-              }).catch((error) => {
-                console.log('Error writing document: ${error}')
-              })
-          } else {
-              console.log("No such document!")
-          }
-      }).catch((error) => {
-          console.log("Error getting document:", error)
-      })
     }
   }
 
